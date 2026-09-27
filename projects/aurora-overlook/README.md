@@ -40,7 +40,8 @@ python3 scripts/serve.py
 ```
 
 Then open `http://<your-computer-ip>:8000/aurora-overlook/` in Safari on the
-Vision Pro. Or turn on GitHub Pages (see the root README).
+Vision Pro. Or use the GitHub Pages link (see the root README):
+`https://eeyorenn.github.io/VisionPro/aurora-overlook/`.
 
 If you host it somewhere else, serve `.usdz` as `model/vnd.usdz+zip` and `.exr`
 as `image/aces`.
