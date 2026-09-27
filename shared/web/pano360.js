@@ -1,3 +1,4 @@
+// Shared by every project: import { mountPanorama } from '../shared/pano360.js'.
 // Tiny drag-to-look 360° viewer for browsers without immersive <model> support.
 // Renders an equirectangular image by casting a ray per pixel in a shader.
 

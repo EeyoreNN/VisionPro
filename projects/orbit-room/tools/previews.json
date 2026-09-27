@@ -1,0 +1,42 @@
+{
+  "environment": "assets/space-light.exr",
+  "additive": "glow|line",
+  "viewpoints": "assets/viewpoints.json",
+  "jobs": [
+    {
+      "type": "orbit",
+      "model": "assets/orrery.usdz",
+      "out": "assets/orrery-poster.png",
+      "azimuth": 20,
+      "elevation": 28,
+      "distance": 0.95
+    },
+    {
+      "type": "view",
+      "model": "assets/orbit-room.usdz",
+      "out": "assets/view-deck.png",
+      "viewpoint": "deck",
+      "pitch": -10,
+      "fov": 90,
+      "w": 960,
+      "h": 600
+    },
+    {
+      "type": "view",
+      "model": "assets/orbit-room.usdz",
+      "out": "assets/view-skywalk.png",
+      "viewpoint": "skywalk",
+      "pitch": -38,
+      "fov": 90,
+      "w": 960,
+      "h": 600
+    },
+    {
+      "type": "equirect",
+      "model": "assets/orbit-room.usdz",
+      "out": "assets/space360.jpg",
+      "viewpoint": "deck",
+      "w": 4096
+    }
+  ]
+}

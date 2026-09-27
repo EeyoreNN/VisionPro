@@ -1,0 +1,6 @@
+{
+  "title": "Orbit Room",
+  "description": "A room-scale Solar System: the Sun just past your Safari window, eight planets orbiting at waist height, Neptune sweeping by at arm's length.",
+  "thumbnail": "assets/view-deck.png",
+  "tags": ["visionOS 27", "requestImmersive", "USD animation", "playbackRate"]
+}

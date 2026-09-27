@@ -6,6 +6,7 @@
 Each project lives in projects/<slug>/ and is picked up when it has:
     project.json   {"title", "description", "thumbnail" (path inside site/), "tags"}
     site/          the static files to publish at /<slug>/
+shared/web/ is published at /shared/, so sites import it as '../shared/<file>.js'.
 Used by the GitHub Pages workflow and by scripts/serve.py.
 """
 
@@ -92,6 +93,8 @@ def main():
     projects = load_projects()
     for p in projects:
         shutil.copytree(ROOT / "projects" / p["slug"] / "site", out / p["slug"])
+    # Shared browser modules (immersive helpers, 360 viewer) at /shared/.
+    shutil.copytree(ROOT / "shared" / "web", out / "shared")
     (out / "index.html").write_text(render_index(projects))
     (out / ".nojekyll").write_text("")
     print(f"built {len(projects)} project(s) into {out}")

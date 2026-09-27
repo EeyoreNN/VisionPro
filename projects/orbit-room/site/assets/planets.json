@@ -1,0 +1,85 @@
+{
+  "loop_seconds": 240,
+  "planets": [
+    {
+      "id": "mercury",
+      "title": "Mercury",
+      "color": "#b9b2a8",
+      "year": "88 days",
+      "day": "176 days",
+      "fact": "A single day (sunrise to sunrise) lasts two of its years.",
+      "orbit_m": 0.45,
+      "revs_per_loop": 20
+    },
+    {
+      "id": "venus",
+      "title": "Venus",
+      "color": "#e8cf94",
+      "year": "225 days",
+      "day": "117 days",
+      "fact": "The hottest planet: thick clouds trap heat at about 465 °C.",
+      "orbit_m": 0.7,
+      "revs_per_loop": 12
+    },
+    {
+      "id": "earth",
+      "title": "Earth",
+      "color": "#4f8fe0",
+      "year": "365.25 days",
+      "day": "24 hours",
+      "fact": "The only world we know with liquid oceans on its surface — and city lights on its night side.",
+      "orbit_m": 0.98,
+      "revs_per_loop": 8
+    },
+    {
+      "id": "mars",
+      "title": "Mars",
+      "color": "#d0653c",
+      "year": "687 days",
+      "day": "24 h 37 m",
+      "fact": "Home to Olympus Mons, a volcano nearly three times the height of Everest.",
+      "orbit_m": 1.28,
+      "revs_per_loop": 5
+    },
+    {
+      "id": "jupiter",
+      "title": "Jupiter",
+      "color": "#d6b48c",
+      "year": "11.9 years",
+      "day": "9 h 56 m",
+      "fact": "Its Great Red Spot is a storm wider than the whole Earth.",
+      "orbit_m": 2.2,
+      "revs_per_loop": 3
+    },
+    {
+      "id": "saturn",
+      "title": "Saturn",
+      "color": "#e4d29c",
+      "year": "29.5 years",
+      "day": "10 h 34 m",
+      "fact": "Its rings are hundreds of thousands of km wide but mostly only tens of meters thick.",
+      "orbit_m": 2.75,
+      "revs_per_loop": 2
+    },
+    {
+      "id": "uranus",
+      "title": "Uranus",
+      "color": "#9fe0e4",
+      "year": "84 years",
+      "day": "17 h 14 m",
+      "fact": "It rolls around the Sun on its side, tilted about 98°.",
+      "orbit_m": 3.2,
+      "revs_per_loop": 1
+    },
+    {
+      "id": "neptune",
+      "title": "Neptune",
+      "color": "#4f6fe6",
+      "year": "165 years",
+      "day": "16 h 6 m",
+      "fact": "The windiest planet: gusts reach around 2,000 km/h.",
+      "orbit_m": 3.6,
+      "revs_per_loop": 1
+    }
+  ]
+}

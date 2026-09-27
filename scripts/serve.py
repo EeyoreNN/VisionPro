@@ -6,7 +6,7 @@ assets (USDZ models, EXR/HDR lighting maps) and prints the LAN address so you
 can open it on Apple Vision Pro on the same Wi-Fi network.
 
     python3 scripts/serve.py                                 # every project + a gallery, served live
-    python3 scripts/serve.py projects/aurora-overlook/site   # one project
+    python3 scripts/serve.py projects/aurora-overlook/site   # one folder as-is (no /shared/)
     python3 scripts/serve.py --port 9000
 """
 
@@ -55,7 +55,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Gallery mode: /<slug>/... is served live from projects/<slug>/site/...
         if self.gallery:
             parts = path.split("?")[0].split("#")[0].lstrip("/").split("/", 1)
-            site = ROOT / "projects" / parts[0] / "site"
+            site = ROOT / "shared" / "web" if parts[0] == "shared" else ROOT / "projects" / parts[0] / "site"
             if parts[0] and site.is_dir():
                 rest = parts[1] if len(parts) > 1 else ""
                 # Let the base class sanitize the path, then re-root it in the project's site/.

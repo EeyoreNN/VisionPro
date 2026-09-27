@@ -1,0 +1,6 @@
+{
+  "title": "Pinch Pop",
+  "description": "A WebXR hand-tracking game: pop iridescent bubbles with a look and a pinch or a fingertip poke, with spatial audio. Also plays in any browser.",
+  "thumbnail": "assets/screenshot.png",
+  "tags": ["WebXR", "hand tracking", "transient-pointer", "spatial audio", "three.js"]
+}

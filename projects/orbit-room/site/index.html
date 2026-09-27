@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Orbit Room — the Solar System in your space</title>
+  <meta name="description" content="A room-scale Solar System for Apple Vision Pro. Step in from Safari on visionOS 27 and watch the planets orbit around you.">
+  <meta name="theme-color" content="#05060d">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:title" content="Orbit Room">
+  <meta property="og:description" content="Stand at the edge of the Solar System while Neptune sweeps past at arm's length.">
+  <meta property="og:image" content="assets/view-skywalk.png">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="5" fill="#ffb84d"/>
+        <ellipse cx="16" cy="16" rx="13" ry="5.5" fill="none" stroke="#7fa8ff" stroke-width="1.6" transform="rotate(-18 16 16)"/>
+        <circle cx="27.5" cy="12.5" r="2.2" fill="#9fe0e4"/>
+      </svg>
+      <span>Orbit Room</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#views">Where to stand</a>
+      <a href="#planets">Planets</a>
+      <a href="#how">How it works</a>
+    </nav>
+    <span class="support-pill" id="support-pill" data-state="checking">Checking your browser…</span>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">A spatial web experience · visionOS 27</p>
+        <h1>The Solar System,<br><span class="glow-text">in your room.</span></h1>
+        <p class="lede">
+          The Sun hangs just past your Safari window. Eight planets circle it at waist height —
+          Mercury whips around every twelve seconds while Neptune takes four minutes to sweep past
+          you at arm’s length. Built with nothing but HTML and one USDZ file.
+        </p>
+        <div class="actions">
+          <button class="btn primary" id="enter" type="button" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="currentColor"/><ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-20 12 12)"/></svg>
+            <span>Step into orbit</span>
+          </button>
+          <a class="btn ghost" href="#planets">Meet the planets</a>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+
+      <figure class="stage">
+        <!-- Inline 3D: a tabletop brass orrery. stagemode="orbit" lets people spin it. -->
+        <model id="orrery"
+               src="assets/orrery.usdz"
+               environmentmap="assets/space-light.exr"
+               stagemode="orbit"
+               autoplay loop
+               aria-label="A tabletop brass orrery with the Sun and eight planets on their orbits"></model>
+        <img class="stage-poster" src="assets/orrery-poster.png" alt="A tabletop brass orrery with the Sun and eight planets" width="1200" height="900">
+        <figcaption class="stage-caption" id="stage-caption">Pinch and drag to spin the orrery</figcaption>
+      </figure>
+    </section>
+
+    <section class="section" id="views" aria-labelledby="views-title">
+      <div class="section-head">
+        <p class="eyebrow">Where to stand</p>
+        <h2 id="views-title">Two decks, one Sun</h2>
+        <p class="section-lede">Both decks float in real-world scale, so the one under you sits right on your floor.</p>
+      </div>
+      <div class="view-grid">
+        <article class="view-card" data-viewpoint="deck">
+          <img src="assets/view-deck.png" alt="The Sun and planets seen from the observation deck at the edge of the orbits" loading="lazy" width="960" height="600">
+          <div class="view-body">
+            <h3>Observation deck</h3>
+            <p>Stand at the edge of the Solar System. Neptune and Uranus sweep past at arm’s length.</p>
+            <button class="btn small" type="button" data-go="deck" hidden>Stand here</button>
+          </div>
+        </article>
+        <article class="view-card" data-viewpoint="skywalk">
+          <img src="assets/view-skywalk.png" alt="Looking down on all eight orbits from the skywalk" loading="lazy" width="960" height="600">
+          <div class="view-body">
+            <h3>Skywalk</h3>
+            <p>Float above the plane of the planets and watch all eight orbits at once.</p>
+            <button class="btn small" type="button" data-go="skywalk" hidden>Stand here</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="planets" aria-labelledby="planets-title">
+      <div class="section-head">
+        <p class="eyebrow">The planets</p>
+        <h2 id="planets-title">Eight worlds, four minutes</h2>
+        <p class="section-lede" id="planets-lede">Orbits are squeezed and planets enlarged so everything fits in a room — the real Neptune is 30 times farther out than Earth. Each planet’s night side faces away from the Sun, and Earth’s cities glow in the dark.</p>
+      </div>
+      <ol class="planet-list" id="planet-list"></ol>
+    </section>
+
+    <section class="section" id="sky360" aria-labelledby="sky360-title" hidden>
+      <div class="section-head">
+        <p class="eyebrow">Preview</p>
+        <h2 id="sky360-title">Look around the deck</h2>
+        <p class="section-lede">Not on Vision Pro yet? Drag to look around. The planets move once you step in on the headset.</p>
+      </div>
+      <canvas id="pano360-canvas" class="pano360" aria-label="Interactive 360 degree view from the observation deck. Drag to look around."></canvas>
+    </section>
+
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2 id="how-title">Animation straight from USD</h2>
+        <p class="section-lede">Each planet sits in its own spinning transform, keyframed in the USDZ so the whole system loops seamlessly every four minutes. The page only starts, pauses and speeds it up.</p>
+      </div>
+<pre><code>&lt;model id="world" src="assets/orbit-room.usdz"
+       environmentmap="assets/space-light.exr"
+       autoplay loop style="display: none"&gt;&lt;/model&gt;
+
+enter.onclick = () =&gt; world.requestImmersive();
+speed.onclick = () =&gt; { world.playbackRate = 8; };
+pause.onclick = () =&gt; world.paused ? world.play() : world.pause();</code></pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Orbit Room · best in Safari on Apple Vision Pro with visionOS 27 · the orrery also works inline on iPhone, iPad and Mac with Safari 27.</p>
+  </footer>
+
+  <!-- The immersive environment. Hidden, so it only downloads when someone steps in. -->
+  <model id="world"
+         src="assets/orbit-room.usdz"
+         environmentmap="assets/space-light.exr"
+         autoplay loop
+         style="display: none"
+         aria-label="A room-scale Solar System with the Sun, eight orbiting planets and the Milky Way"></model>
+
+  <div class="dock" id="dock" hidden>
+    <div class="dock-where">
+      <span class="dock-label">You’re on the</span>
+      <strong id="dock-name">Observation deck</strong>
+    </div>
+    <div class="dock-group" role="group" aria-label="Move to another deck">
+      <button type="button" data-go="deck">Deck</button>
+      <button type="button" data-go="skywalk">Skywalk</button>
+    </div>
+    <div class="dock-group" role="group" aria-label="Time controls">
+      <button type="button" id="pause" aria-pressed="false">Pause</button>
+      <button type="button" data-speed="1" aria-pressed="true">1×</button>
+      <button type="button" data-speed="4" aria-pressed="false">4×</button>
+      <button type="button" data-speed="12" aria-pressed="false">12×</button>
+    </div>
+    <button class="btn leave" id="leave" type="button">Leave</button>
+    <p class="dock-hint">Or press the Digital Crown at any time.</p>
+  </div>
+</body>
+</html>

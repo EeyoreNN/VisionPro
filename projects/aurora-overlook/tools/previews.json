@@ -1,0 +1,13 @@
+{
+  "environment": "assets/overlook-light.exr",
+  "additive": "aurora|curtain",
+  "viewpoints": "assets/viewpoints.json",
+  "jobs": [
+    { "type": "orbit", "model": "assets/diorama.usdz", "out": "assets/diorama-poster.png", "azimuth": 30, "elevation": 22, "distance": 0.7 },
+    { "type": "view", "model": "assets/overlook.usdz", "out": "assets/view-deck.png", "viewpoint": "deck", "pitch": 8, "fov": 75, "w": 960, "h": 600 },
+    { "type": "view", "model": "assets/overlook.usdz", "out": "assets/view-jetty.png", "viewpoint": "jetty", "pitch": 8, "fov": 75, "w": 960, "h": 600 },
+    { "type": "view", "model": "assets/overlook.usdz", "out": "assets/view-ledge.png", "viewpoint": "ledge", "pitch": 8, "fov": 75, "w": 960, "h": 600 },
+    { "type": "equirect", "model": "assets/overlook.usdz", "out": "assets/sky360.jpg", "viewpoint": "deck", "w": 4096,
+      "panorama": { "out": "assets/panorama.jpg", "top": 45, "bottom": -25 } }
+  ]
+}

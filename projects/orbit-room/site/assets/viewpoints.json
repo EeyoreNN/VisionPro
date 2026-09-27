@@ -1,0 +1,26 @@
+{
+  "viewpoints": [
+    {
+      "id": "deck",
+      "name": "Observation deck",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "heading": 0,
+      "blurb": "Stand at the edge of the Solar System. Neptune and Uranus sweep past at arm's length."
+    },
+    {
+      "id": "skywalk",
+      "name": "Skywalk",
+      "position": [
+        0.0,
+        2.6,
+        -2.4
+      ],
+      "heading": 0,
+      "blurb": "Float above the plane of the planets and watch all eight orbits at once."
+    }
+  ]
+}
