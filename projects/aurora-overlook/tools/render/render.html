@@ -1,0 +1,152 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Overlook preview renderer</title>
+<style>html,body{margin:0;background:#000}</style>
+<script type="importmap">
+{ "imports": {
+  "three": "/node_modules/three/build/three.module.js",
+  "three/addons/": "/node_modules/three/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<script type="module">
+// Offline preview renderer for the generated USDZ files. It is only used by
+// tools/render/render.mjs to make the page's posters, thumbnails and 360 image,
+// and doubles as a smoke test that the USDZ files parse and look right.
+import * as THREE from 'three';
+import { USDZLoader } from 'three/addons/loaders/USDZLoader.js';
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js';
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NoToneMapping;
+document.body.appendChild(renderer.domElement);
+
+// Same lighting map the page hands to <model environmentmap>, so metal and
+// water pick up the sky the way they will in Safari.
+const environment = new EXRLoader().loadAsync('/assets/overlook-light.exr').then((tex) => {
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  return tex;
+});
+
+const cache = new Map();
+async function load(url) {
+  if (!cache.has(url)) {
+    const group = await new USDZLoader().loadAsync(url);
+    group.traverse((o) => {
+      if (!o.isMesh) return;
+      const mats = Array.isArray(o.material) ? o.material : [o.material];
+      for (const m of mats) {
+        // Baked scenes: everything reads as emissive, so drop lighting noise.
+        if (m.emissiveMap) { m.color?.set(0x000000); m.emissive?.set(0xffffff); }
+        if (m.emissiveMap && /aurora|curtain/i.test(`${m.name} ${o.name} ${o.parent?.name}`)) {
+          // Match RealityKit: emissive curtain whose opacity comes from texture alpha.
+          o.material = new THREE.MeshBasicMaterial({ map: m.emissiveMap, transparent: true, depthWrite: false,
+                                                     side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
+        }
+      }
+    });
+    cache.set(url, group);
+  }
+  return cache.get(url);
+}
+
+async function sceneWith(group, background) {
+  const scene = new THREE.Scene();
+  scene.environment = await environment;
+  scene.background = background ?? null;
+  scene.add(group);
+  scene.add(new THREE.HemisphereLight(0x9fb4ff, 0x1a2230, 0.6));
+  const moon = new THREE.DirectionalLight(0xc8d6ff, 0.8);
+  moon.position.set(0.61, 0.5, 0.61);
+  scene.add(moon);
+  return scene;
+}
+
+function eyeCamera(pos, yawDeg, pitchDeg, fov, aspect) {
+  const cam = new THREE.PerspectiveCamera(fov, aspect, 0.05, 400);
+  cam.position.set(pos[0], pos[1] + 1.6, pos[2]);
+  // yaw 0 looks north (-Z), +90 looks east (+X)
+  cam.rotation.order = 'YXZ';
+  cam.rotation.y = -THREE.MathUtils.degToRad(yawDeg);
+  cam.rotation.x = THREE.MathUtils.degToRad(pitchDeg);
+  return cam;
+}
+
+window.renderView = async ({ url, pos, yaw, pitch = 0, fov = 70, w = 1280, h = 800 }) => {
+  const group = await load(url);
+  const scene = await sceneWith(group);
+  renderer.setSize(w, h);
+  renderer.render(scene, eyeCamera(pos, yaw, pitch, fov, w / h));
+  return renderer.domElement.toDataURL('image/png');
+};
+
+window.renderOrbit = async ({ url, azimuth = 30, elevation = 22, distance = 0.7, w = 1200, h = 900, fov = 30 }) => {
+  const group = await load(url);
+  const scene = await sceneWith(group);
+  const box = new THREE.Box3().setFromObject(group);
+  const center = box.getCenter(new THREE.Vector3());
+  const cam = new THREE.PerspectiveCamera(fov, w / h, 0.01, 50);
+  const a = THREE.MathUtils.degToRad(azimuth), e = THREE.MathUtils.degToRad(elevation);
+  cam.position.set(center.x + distance * Math.sin(a) * Math.cos(e), center.y + distance * Math.sin(e),
+                   center.z + distance * Math.cos(a) * Math.cos(e));
+  cam.lookAt(center);
+  renderer.setClearColor(0x000000, 0);
+  renderer.setSize(w, h);
+  renderer.render(scene, cam);
+  return { png: renderer.domElement.toDataURL('image/png'), size: box.getSize(new THREE.Vector3()).toArray() };
+};
+
+window.renderEquirect = async ({ url, pos, w = 4096 }) => {
+  const group = await load(url);
+  const scene = await sceneWith(group);
+  const target = new THREE.WebGLCubeRenderTarget(2048, { generateMipmaps: false });
+  const cube = new THREE.CubeCamera(0.05, 400, target);
+  cube.position.set(pos[0], pos[1] + 1.6, pos[2]);
+  scene.add(cube);
+  cube.update(renderer, scene);
+
+  const h = w / 2;
+  const quad = new THREE.Mesh(
+    new THREE.PlaneGeometry(2, 2),
+    new THREE.ShaderMaterial({
+      uniforms: { cube: { value: target.texture } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+      fragmentShader: `
+        uniform samplerCube cube; varying vec2 vUv;
+        void main() {
+          float az = (vUv.x - 0.5) * 6.28318530718;
+          float el = (vUv.y - 0.5) * 3.14159265359;
+          vec3 dir = vec3(sin(az) * cos(el), sin(el), -cos(az) * cos(el));
+          gl_FragColor = textureCube(cube, vec3(-dir.x, dir.y, dir.z));
+          #include <colorspace_fragment>
+        }`,
+    })
+  );
+  const flat = new THREE.Scene();
+  flat.add(quad);
+  renderer.setSize(w, h);
+  renderer.render(flat, new THREE.Camera());
+  return renderer.domElement.toDataURL('image/jpeg', 0.9);
+};
+
+// Crop a band of the equirect into a wide panorama (for <img controls>).
+window.cropPanorama = async (dataUrl, topDeg, bottomDeg) => {
+  const img = new Image();
+  img.src = dataUrl;
+  await img.decode();
+  const y0 = Math.round((90 - topDeg) / 180 * img.height);
+  const y1 = Math.round((90 - bottomDeg) / 180 * img.height);
+  const c = document.createElement('canvas');
+  c.width = img.width; c.height = y1 - y0;
+  c.getContext('2d').drawImage(img, 0, y0, img.width, c.height, 0, 0, img.width, c.height);
+  return c.toDataURL('image/jpeg', 0.88);
+};
+
+window.ready = true;
+</script>
+</body>
+</html>

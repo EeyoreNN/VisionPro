@@ -1,0 +1,6 @@
+{
+  "title": "Aurora Overlook",
+  "description": "Step into a moonlit alpine valley beneath the northern lights, straight from Safari. Immersive website environment + inline <model> diorama.",
+  "thumbnail": "assets/view-deck.png",
+  "tags": ["visionOS 27", "Safari", "requestImmersive", "<model>", "USDZ"]
+}

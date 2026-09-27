@@ -1,0 +1,13 @@
+{
+  "name": "aurora-overlook-render",
+  "private": true,
+  "type": "module",
+  "description": "Renders preview images of the generated USDZ files with three.js in headless Chromium.",
+  "scripts": {
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "^1.56.0",
+    "three": "^0.186.0"
+  }
+}

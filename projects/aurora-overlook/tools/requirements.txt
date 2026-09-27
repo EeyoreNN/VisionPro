@@ -1,0 +1,4 @@
+usd-core>=25.0
+numpy>=1.26
+pillow>=10.0
+OpenEXR>=3.2

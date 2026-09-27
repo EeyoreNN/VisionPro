@@ -1,0 +1,37 @@
+{
+  "viewpoints": [
+    {
+      "id": "deck",
+      "name": "Overlook deck",
+      "blurb": "Stand on the brass compass rose. The lake opens to the north and the aurora ripples above the peaks.",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "heading": 0
+    },
+    {
+      "id": "jetty",
+      "name": "Lantern jetty",
+      "blurb": "Walk to the end of the old jetty. Water on three sides, fireflies drifting over the shallows.",
+      "position": [
+        -14.0,
+        -5.95,
+        -25.0
+      ],
+      "heading": 75
+    },
+    {
+      "id": "ledge",
+      "name": "Summit ledge",
+      "blurb": "Climb the southern ridge for the whole valley: deck, lake and the northern lights in one sweep.",
+      "position": [
+        16.0,
+        11.066,
+        30.0
+      ],
+      "heading": -16
+    }
+  ]
+}
