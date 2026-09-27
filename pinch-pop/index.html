@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pinch Pop — a hand-tracking bubble game</title>
+  <meta name="description" content="Pop iridescent bubbles with a look and a pinch — or a poke of your fingertip. A WebXR game for Apple Vision Pro that also plays in any browser.">
+  <meta name="theme-color" content="#150f2b">
+  <meta name="color-scheme" content="dark">
+  <meta property="og:title" content="Pinch Pop">
+  <meta property="og:image" content="assets/screenshot.png">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">
+    { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    } }
+  </script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <main>
+    <header class="intro">
+      <p class="eyebrow">WebXR · hand tracking · Apple Vision Pro</p>
+      <h1>Pinch <span class="shine">Pop</span></h1>
+      <p class="lede">Iridescent bubbles drift up around you. Look at one and pinch — or reach out and poke it with a fingertip. Chain pops for a combo, grab the gold, and leave the storm clouds alone.</p>
+      <div class="actions">
+        <button class="btn primary" id="play-xr" type="button" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="9" r="2" fill="currentColor" opacity=".7"/></svg>
+          <span>Play in your space</span>
+        </button>
+        <button class="btn" id="play-here" type="button">Play here with a mouse</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </header>
+
+    <section class="arena" aria-label="Game">
+      <canvas id="game" aria-label="Pinch Pop game. Click bubbles to pop them."></canvas>
+      <div class="hud" id="hud" hidden>
+        <div><span class="hud-label">Score</span><strong id="hud-score">0</strong></div>
+        <div><span class="hud-label">Combo</span><strong id="hud-combo">×1</strong></div>
+        <div><span class="hud-label">Time</span><strong id="hud-time">60</strong></div>
+      </div>
+      <div class="overlay" id="overlay">
+        <h2 id="overlay-title">Ready?</h2>
+        <p id="overlay-text">60 seconds. Blue bubbles are 1 point, gold are 5, storm clouds cost 5.</p>
+        <button class="btn primary" id="overlay-play" type="button">Start</button>
+      </div>
+      <div class="float-score" id="float-score" aria-hidden="true"></div>
+    </section>
+
+    <section class="how">
+      <div class="how-card">
+        <span class="how-icon" aria-hidden="true">👀🤏</span>
+        <h3>Look &amp; pinch</h3>
+        <p>visionOS sends a gaze-aimed <code>transient-pointer</code> the moment you pinch. The game casts that ray through the bubbles.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-icon" aria-hidden="true">☝️</span>
+        <h3>Poke</h3>
+        <p>With <code>hand-tracking</code>, every frame checks your index fingertips against each bubble — reach out and touch them.</p>
+      </div>
+      <div class="how-card">
+        <span class="how-icon" aria-hidden="true">🔊</span>
+        <h3>Hear where it popped</h3>
+        <p>Each pop is synthesized on the fly and placed in 3D with an HRTF <code>PannerNode</code>, rising in pitch as your combo grows.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Best score is kept on this device only. On Vision Pro, press the Digital Crown to leave at any time.
+    </footer>
+  </main>
+</body>
+</html>

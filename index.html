@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vision Pro projects</title>
+<meta name="color-scheme" content="dark">
+<style>
+  body { margin: 0; background: #070b16; color: #eef3ff; font: 18px/1.5 -apple-system, system-ui, sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 56px 24px; }
+  h1 { font-size: clamp(36px, 5vw, 60px); letter-spacing: -0.03em; margin: 0 0 8px; }
+  .lede { color: #b7c3dc; margin: 0 0 40px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+  .card { display: flex; flex-direction: column; text-decoration: none; color: inherit; border-radius: 22px; overflow: hidden;
+          background: rgba(22, 32, 56, 0.6); border: 1px solid rgba(190, 210, 255, 0.14); transition: transform .2s; }
+  .card:hover, .card:focus-visible { transform: translateY(-3px); }
+  .card img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+  .body { padding: 20px 22px 24px; }
+  h2 { margin: 0 0 6px; font-size: 22px; }
+  .body p { margin: 0 0 14px; color: #b7c3dc; font-size: 16px; }
+  .tags span { display: inline-block; font-size: 13px; padding: 4px 10px; margin: 0 6px 6px 0; border-radius: 99px;
+               background: rgba(109, 255, 179, 0.12); color: #6dffb3; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Vision Pro projects</h1>
+  <p class="lede">Spatial web experiments for Apple Vision Pro. Open in Safari on visionOS.</p>
+  <div class="grid">
+      <a class="card" href="aurora-overlook/">
+        <img src="aurora-overlook/assets/view-deck.png" alt="" loading="lazy">
+        <div class="body">
+          <h2>Aurora Overlook</h2>
+          <p>Step into a moonlit alpine valley beneath the northern lights, straight from Safari. Immersive website environment + inline &lt;model&gt; diorama.</p>
+          <div class="tags"><span>visionOS 27</span><span>Safari</span><span>requestImmersive</span><span>&lt;model&gt;</span><span>USDZ</span></div>
+        </div>
+      </a>
+      <a class="card" href="orbit-room/">
+        <img src="orbit-room/assets/view-deck.png" alt="" loading="lazy">
+        <div class="body">
+          <h2>Orbit Room</h2>
+          <p>A room-scale Solar System: the Sun just past your Safari window, eight planets orbiting at waist height, Neptune sweeping by at arm&#x27;s length.</p>
+          <div class="tags"><span>visionOS 27</span><span>requestImmersive</span><span>USD animation</span><span>playbackRate</span></div>
+        </div>
+      </a>
+      <a class="card" href="pinch-pop/">
+        <img src="pinch-pop/assets/screenshot.png" alt="" loading="lazy">
+        <div class="body">
+          <h2>Pinch Pop</h2>
+          <p>A WebXR hand-tracking game: pop iridescent bubbles with a look and a pinch or a fingertip poke, with spatial audio. Also plays in any browser.</p>
+          <div class="tags"><span>WebXR</span><span>hand tracking</span><span>transient-pointer</span><span>spatial audio</span><span>three.js</span></div>
+        </div>
+      </a>
+  </div>
+</main>
+</body>
+</html>
